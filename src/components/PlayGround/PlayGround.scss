@@ -1,4 +1,24 @@
 $cell_size: 35px;
+@font-face {
+  font-family: "ITCTetraW01-Bold";
+  src: font-url(
+    "//db.onlinewebfonts.com/t/612a2dea045a4d6592cf8c8d16d1d49a.eot"
+  );
+  src: font-url(
+        "//db.onlinewebfonts.com/t/612a2dea045a4d6592cf8c8d16d1d49a.eot?#iefix"
+      )
+      format("embedded-opentype"),
+    font-url("//db.onlinewebfonts.com/t/612a2dea045a4d6592cf8c8d16d1d49a.woff2")
+      format("woff2"),
+    font-url("//db.onlinewebfonts.com/t/612a2dea045a4d6592cf8c8d16d1d49a.woff")
+      format("woff"),
+    font-url("//db.onlinewebfonts.com/t/612a2dea045a4d6592cf8c8d16d1d49a.ttf")
+      format("truetype"),
+    font-url(
+        "//db.onlinewebfonts.com/t/612a2dea045a4d6592cf8c8d16d1d49a.svg#ITCTetraW01-Bold"
+      )
+      format("svg");
+}
 .PlayGround-container {
   width: 100%;
   height: 100%;
