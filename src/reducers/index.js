@@ -29,7 +29,7 @@ const initialState = {
   username: "",
   score: 0,
   color: 0,
-  theme: "dark",
+  theme: "classic",
 };
 
 const playGroundSlice = createSlice({
