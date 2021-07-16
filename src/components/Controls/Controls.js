@@ -35,28 +35,22 @@ const Controls = ({
     if (!lose && username.length > 0)
       switch (e.code) {
         case "KeyA":
-          if (Date.now() - lastCall > 30) {
+          if (Date.now() - lastCall > 10) {
             moveShapeHorizontal(-1);
             lastCall = Date.now();
           }
           break;
         case "KeyD":
-          if (Date.now() - lastCall > 30) {
+          if (Date.now() - lastCall > 10) {
             moveShapeHorizontal(1);
             lastCall = Date.now();
           }
           break;
         case "KeyQ":
-          if (Date.now() - lastCall > 20) {
-            shapeRotate(false);
-            lastCall = Date.now();
-          }
+          shapeRotate(false);
           break;
         case "KeyE":
-          if (Date.now() - lastCall > 20) {
-            shapeRotate(true);
-            lastCall = Date.now();
-          }
+          shapeRotate(true);
           break;
         case "KeyS":
           moveShapeDown();
