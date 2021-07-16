@@ -54,14 +54,20 @@ export const intervalFunc = () => {
   if (!newMove.length) {
     const moveInterval = store.getState().moveInterval;
     setTimeout(() => {
-      store.dispatch(shapeLand());
-      setTimeout(() => {
-        const timer = store.getState().timer;
-        if (!store.getState().lose && timer.getTimerObj() != null)
-          store.dispatch(spawnShape());
-      }, moveInterval);
+      const currentShape = store.getState().currentShape;
+      const newShape = currentShape.map((el) => ({ ...el, i: +el.i + 1 }));
+      const playGround = store.getState().playGround;
+      if (move(playGround, newShape, currentShape).length === 0) {
+        store.dispatch(shapeLand());
+        setTimeout(() => {
+          const timer = store.getState().timer;
+          if (!store.getState().lose && timer.getTimerObj() != null)
+            store.dispatch(spawnShape());
+        }, moveInterval);
+      }
     }, moveInterval / 2);
   }
+  return newMove;
 };
 
 export default Timer;
