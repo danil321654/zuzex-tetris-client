@@ -65,7 +65,7 @@ export const intervalFunc = () => {
             store.dispatch(spawnShape());
         }, moveInterval);
       }
-    }, moveInterval / 2);
+    }, moveInterval - 100);
   }
   return newMove;
 };
