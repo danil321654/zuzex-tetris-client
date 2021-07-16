@@ -10,6 +10,7 @@ import {
   moveShapeDown,
 } from "../../reducers/index";
 import "./Controls.scss";
+import "../../index.scss";
 const Controls = ({
   username,
   lose,

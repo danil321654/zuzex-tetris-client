@@ -6,6 +6,7 @@ import "./PlayGround.scss";
 import { moveShapeDown, moveShapeHorizontal } from "../../reducers";
 import store from "../../store";
 import { shapeRotate } from "../../reducers/index";
+import "../../index.scss";
 const PlayGround = () => {
   const {
     playGround,

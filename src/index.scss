@@ -21,4 +21,14 @@ code {
     monospace;
 }
 
-@import url(//db.onlinewebfonts.com/c/612a2dea045a4d6592cf8c8d16d1d49a?family=ITCTetraW01-Bold);
+@font-face {
+  font-family: "ITCTetraW01-Bold";
+  src: url("./fonts/@font-face/612a2dea045a4d6592cf8c8d16d1d49a.eot");
+  src: url("./fonts/@font-face/612a2dea045a4d6592cf8c8d16d1d49a.woff2")
+      format("woff2"),
+    url("./fonts/@font-face/612a2dea045a4d6592cf8c8d16d1d49a.woff")
+      format("woff"),
+    url("./fonts/@font-face/612a2dea045a4d6592cf8c8d16d1d49a.ttf")
+      format("truetype"),
+    url("./fonts/@font-face/612a2dea045a4d6592cf8c8d16d1d49a.svg") format("svg");
+}
