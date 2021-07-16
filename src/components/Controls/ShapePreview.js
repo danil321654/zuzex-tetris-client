@@ -12,11 +12,11 @@ const ShapePreview = () => {
       <span>next shape:</span>
       <div>
         {blocks.map((row, i) => (
-          <div className="PlayGround-row">
+          <div key={`$prev${i}`} className="PlayGround-row">
             {row.map(
               (dot, j) =>
                 nextShape.some((block) => block.i === i && block.j === j) && (
-                  <Cell predicted color={nextColor} />
+                  <Cell key={`$prev${i}${j}`} predicted color={nextColor} />
                 )
             )}
           </div>

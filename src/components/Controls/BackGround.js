@@ -8,9 +8,13 @@ const Background = () => {
     <div className="PlayGround-container Background">
       <div>
         {blocks.map((row, i) => (
-          <div className="PlayGround-row">
-            {row.map(() => (
-              <Cell predicted color={getRandomInt(10, 1)} />
+          <div key={`$back${i}`} className="PlayGround-row">
+            {row.map((cell, j) => (
+              <Cell
+                key={`$back${i}${j}`}
+                predicted
+                color={getRandomInt(10, 1)}
+              />
             ))}
           </div>
         ))}
