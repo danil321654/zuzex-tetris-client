@@ -255,8 +255,8 @@ $cell_size: 35px;
   .PlayGround-cell {
     margin-right: 1px;
     margin-bottom: 1px;
-    height: calc($cell_size / 1.66);
-    width: calc($cell_size / 1.66);
+    height: $cell_size / 1.66;
+    width: $cell_size / 1.66;
   }
   width: content;
   .PlayGround-cell.predicted {
@@ -275,8 +275,8 @@ $cell_size: 35px;
     .PlayGround-cell {
       margin-right: 1px;
       margin-bottom: 1px;
-      height: calc($cell_size/2) !important;
-      width: calc($cell_size/2) !important;
+      height: $cell_size / 2 !important;
+      width: $cell_size / 2 !important;
     }
     width: content;
     .PlayGround-cell.predicted {
