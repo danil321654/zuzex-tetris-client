@@ -29,7 +29,7 @@ const initialState = {
   username: "",
   score: 0,
   color: 0,
-  theme: "classic",
+  theme: "dark",
 };
 
 const playGroundSlice = createSlice({
@@ -75,8 +75,10 @@ const playGroundSlice = createSlice({
             : getRandomShape(state.position - 1);
         state.nextShape = getRandomShape(1);
         state.color =
-          state.nextColor > -1 ? state.nextColor : getRandomInt(10, 1);
-        state.nextColor = getRandomInt(10, 1);
+          state.nextColor > -1
+            ? state.nextColor
+            : (state.users.indexOf(state.username) % 9) + 1;
+        state.nextColor = (state.users.indexOf(state.username) % 9) + 1;
       }
       state.lose = false;
     },

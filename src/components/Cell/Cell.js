@@ -15,7 +15,7 @@ const Cell = ({
   moveShape,
   playGroundWidth,
 }) => {
-  const size = playGroundWidth > 20 ? 1000 / playGroundWidth : 30;
+  const size = playGroundWidth > 30 ? 900 / playGroundWidth : 25;
   const cellClass = cls({
     "PlayGround-cell": true,
     // waterfall,

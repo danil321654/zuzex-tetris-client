@@ -94,8 +94,8 @@ export const horizontalMoveHandle = (state, action) => {
     if (
       state.currentShape[index].j + action.payload >=
         state.playGround[0].length ||
-      state.currentShape[index].j + action.payload < 0 ||
-      state.playGround.length <= state.currentShape[index].i + 1
+      state.currentShape[index].j + action.payload < 0
+      // ||state.playGround.length <= state.currentShape[index].i + 1
     ) {
       state.currentShape = state.oldShape;
       state.oldShape = swap;

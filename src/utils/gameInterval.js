@@ -52,7 +52,9 @@ export const intervalFunc = () => {
   }
 
   if (!newMove.length) {
-    store.dispatch(shapeLand());
+    setTimeout(() => {
+      store.dispatch(shapeLand());
+    }, 100);
     setTimeout(() => {
       const timer = store.getState().timer;
       if (!store.getState().lose && timer.getTimerObj() != null)
