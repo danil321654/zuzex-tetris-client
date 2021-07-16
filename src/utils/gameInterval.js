@@ -52,14 +52,15 @@ export const intervalFunc = () => {
   }
 
   if (!newMove.length) {
+    const moveInterval = store.getState().moveInterval;
     setTimeout(() => {
       store.dispatch(shapeLand());
-    }, 100);
-    setTimeout(() => {
-      const timer = store.getState().timer;
-      if (!store.getState().lose && timer.getTimerObj() != null)
-        store.dispatch(spawnShape());
-    }, 500);
+      setTimeout(() => {
+        const timer = store.getState().timer;
+        if (!store.getState().lose && timer.getTimerObj() != null)
+          store.dispatch(spawnShape());
+      }, moveInterval);
+    }, moveInterval / 2);
   }
 };
 
