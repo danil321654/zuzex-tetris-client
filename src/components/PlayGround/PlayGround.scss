@@ -254,11 +254,36 @@ $cell_size: 35px;
   .PlayGround-cell {
     margin-right: 1px;
     margin-bottom: 1px;
-    height: $cell_size/1.33;
-    width: $cell_size/1.33;
+    height: $cell_size/1.66;
+    width: $cell_size/1.66;
   }
   width: content;
   .PlayGround-cell.predicted {
     opacity: 0.8;
+  }
+}
+
+.Controls-themeSelect {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  .PlayGround-container.small {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 10px;
+    align-items: center;
+    width: 150px;
+    height: 75px;
+    padding: 15px;
+    .PlayGround-cell {
+      margin-right: 1px;
+      margin-bottom: 1px;
+      height: $cell_size/2 !important;
+      width: $cell_size/2 !important;
+    }
+    width: content;
+    .PlayGround-cell.predicted {
+      opacity: 0.8;
+    }
   }
 }

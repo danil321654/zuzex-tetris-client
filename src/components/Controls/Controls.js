@@ -12,12 +12,14 @@ import {
 } from "../../reducers/index";
 import "./Controls.scss";
 import "../../index.scss";
+import { themes } from "../../utils/themes";
 const Controls = ({
   username,
   lose,
   score,
   users,
   authorize,
+  theme,
   requestNewGame,
   moveShapeHorizontal,
   shapeRotate,
@@ -86,7 +88,7 @@ const Controls = ({
         </div>
       )}
       {!username.length ? (
-        <div>
+        <div className="Controls-item">
           {error.length > 0 && <div>{error}</div>}
           <input
             value={name}
@@ -109,7 +111,7 @@ const Controls = ({
         </div>
       ) : (
         <>
-          <ShapePreview />
+          <ShapePreview text={"next shape:"} />
           <button
             className="Controls-button newGame"
             onClick={() => startWatching()}
@@ -132,6 +134,14 @@ const Controls = ({
             />
           </div>
           {!lose && <div className="Controls-item">{`score: ${score}`}</div>}
+          <div className="Controls-themeSelect">
+            {themes
+              .filter((_theme) => _theme !== theme)
+              .slice(0, 3)
+              .map((_theme) => (
+                <ShapePreview text={_theme} />
+              ))}
+          </div>
         </>
       )}
     </div>
@@ -146,6 +156,7 @@ const mapStateToProps = (state) => {
     users: state.users,
     score: state.score,
     mouseControlsEnabled: state.mouseControlsEnabled,
+    theme: state.theme,
   };
 };
 const mapDispatchToProps = {

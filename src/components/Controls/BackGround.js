@@ -1,11 +1,18 @@
 import React from "react";
 import { getRandomInt } from "../../utils/getRandomColor";
+import cls from "classnames";
 import Cell from "../Cell";
+import { useSelector } from "react-redux";
 
 const Background = () => {
+  const theme = useSelector((state) => state.theme);
   const blocks = new Array(100).fill(new Array(100).fill(0));
+  const backGroundClass = cls({
+    "PlayGround-container Background": true,
+    [`${theme}`]: true,
+  });
   return (
-    <div className="PlayGround-container Background">
+    <div className={backGroundClass}>
       <div>
         {blocks.map((row, i) => (
           <div key={`$back${i}`} className="PlayGround-row">

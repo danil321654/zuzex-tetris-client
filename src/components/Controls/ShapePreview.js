@@ -1,15 +1,27 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import cls from "classnames";
 // import { getRandomShape } from "../../utils/getRandomShape";
-
+import { themes } from "../../utils/themes";
 import Cell from "../Cell";
+import { changeTheme } from "../../reducers";
 
-const ShapePreview = () => {
-  const { nextShape, nextColor } = useSelector((state) => state);
+const ShapePreview = ({ text = "" }) => {
+  const { nextShape, nextColor, theme } = useSelector((state) => state);
+  const dispatch = useDispatch();
   const blocks = new Array(2).fill(new Array(4).fill(0));
+  const previewClass = cls({
+    "PlayGround-container": true,
+    small: true,
+    [`${text}`]: themes.includes(text),
+    [`${theme}`]: !themes.includes(text),
+  });
   return (
-    <div className="PlayGround-container small">
-      <span>next shape:</span>
+    <div
+      className={previewClass}
+      onClick={() => themes.includes(text) && dispatch(changeTheme(text))}
+    >
+      <span>{text}</span>
       <div>
         {blocks.map((row, i) => (
           <div key={`$prev${i}`} className="PlayGround-row">

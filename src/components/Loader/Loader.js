@@ -1,18 +1,21 @@
 import React from "react";
-// import { getRandomShape } from "../../utils/getRandomShape";
+import { getRandomInt } from "../../utils/getRandomColor";
 
 import Cell from "../Cell";
 
 const Loader = () => {
   // const loaderShape = getRandomShape(1);
   // const blocks = new Array(3).fill(new Array(3).fill(0));
+  const randomColor = getRandomInt(10, 1);
   return (
     <div className="container PlayGround-container loading">
       {/* {blocks.map((row, i) => (
         <div className="PlayGround-row">
           {row.map((dot, j) =>
             loaderShape.some((block) => block.i === i && block.j === j) ? (
-              <Cell active />
+              <Cell 
+                predicted
+                color={randomColor} />
             ) : (
               <Cell none />
             )
@@ -27,12 +30,12 @@ const Loader = () => {
       <div className="PlayGround-row">
         <Cell none />
         <Cell none />
-        <Cell active />
+        <Cell predicted color={randomColor} />
       </div>{" "}
       <div className="PlayGround-row">
-        <Cell active />
-        <Cell active />
-        <Cell active />
+        <Cell predicted color={randomColor} />
+        <Cell predicted color={randomColor} />
+        <Cell predicted color={randomColor} />
       </div>{" "}
     </div>
   );

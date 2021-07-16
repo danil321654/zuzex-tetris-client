@@ -18,10 +18,12 @@ const PlayGround = () => {
     color,
     oldShape,
     mouseControlsEnabled,
+    theme,
   } = useSelector((state) => state);
   const playGroundClass = cls({
     "PlayGround-container": true,
     inactive: lose && username.length,
+    [`${theme}`]: true,
   });
 
   return (

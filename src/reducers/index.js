@@ -29,6 +29,7 @@ const initialState = {
   username: "",
   score: 0,
   color: 0,
+  theme: "classic",
 };
 
 const playGroundSlice = createSlice({
@@ -136,6 +137,9 @@ const playGroundSlice = createSlice({
     toggleMouseControls(state, action) {
       state.mouseControlsEnabled = action.payload;
     },
+    changeTheme(state, action) {
+      state.theme = action.payload;
+    },
   },
 });
 
@@ -154,5 +158,6 @@ export const {
   startWatching,
   moveShapeDown,
   toggleMouseControls,
+  changeTheme,
 } = playGroundSlice.actions;
 export default playGroundSlice.reducer;
