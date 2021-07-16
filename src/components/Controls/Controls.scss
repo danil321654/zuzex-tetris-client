@@ -1,5 +1,5 @@
 .Controls-container {
-  top: 5px;
+  top: 20px;
   left: 0;
   display: flex;
   justify-content: center;
@@ -27,6 +27,11 @@
     top: calc(100vh / 2 - 6vh);
     left: calc(100vw / 2 - 100px);
   }
+  .Controls-item {
+    background-color: rgb(241, 240, 212);
+    border: 3px solid black;
+    padding: 5px;
+  }
 }
 .Background {
   position: absolute;
@@ -39,6 +44,7 @@
   background-color: white !important;
 
   .PlayGround-cell {
-    margin-right: 0px !important;
+    margin-right: 1px !important;
+    margin-bottom: 1px !important;
   }
 }

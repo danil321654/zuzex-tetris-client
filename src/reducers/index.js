@@ -14,6 +14,7 @@ const initialField = [];
 const initialState = {
   playGround: initialField,
   loading: true,
+  mouseControlsEnabled: false,
   oldShape: [],
   currentShape: [],
   nextShape: [],
@@ -59,6 +60,7 @@ const playGroundSlice = createSlice({
       state.predictedShape = predictMove(state.playGround, state.currentShape);
       state.score = action.payload.score;
       state.moveInterval = action.payload.moveInterval;
+      state.oldShape = [...state.currentShape];
     },
     spawnShape(state) {
       state.oldShape = [];
@@ -131,6 +133,9 @@ const playGroundSlice = createSlice({
         state.predictedShape = [];
       } else state.move = [];
     },
+    toggleMouseControls(state, action) {
+      state.mouseControlsEnabled = action.payload;
+    },
   },
 });
 
@@ -148,5 +153,6 @@ export const {
   requestNewGame,
   startWatching,
   moveShapeDown,
+  toggleMouseControls,
 } = playGroundSlice.actions;
 export default playGroundSlice.reducer;

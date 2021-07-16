@@ -4,11 +4,11 @@ import { colors } from "../../utils/getRandomColor";
 
 const Cell = ({
   value,
-  waterfall,
-  currentLeft,
-  currentRight,
-  currentTop,
-  currentBottom,
+  // waterfall,
+  // currentLeft,
+  // currentRight,
+  // currentTop,
+  // currentBottom,
   predicted,
   none,
   color,
@@ -18,11 +18,11 @@ const Cell = ({
   const size = playGroundWidth > 20 ? 1000 / playGroundWidth : 30;
   const cellClass = cls({
     "PlayGround-cell": true,
-    waterfall,
-    "current-left": currentLeft,
-    "current-right": currentRight,
-    "current-top": currentTop,
-    "current-bottom": currentBottom,
+    // waterfall,
+    // "current-left": currentLeft,
+    // "current-right": currentRight,
+    // "current-top": currentTop,
+    // "current-bottom": currentBottom,
     active: value > 0 && value < 10,
     falling: value > 10 || predicted > 0,
     [`${colors[predicted ? color - 1 : value > 10 ? value - 11 : value - 1]}`]:

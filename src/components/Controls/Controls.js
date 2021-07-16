@@ -8,6 +8,7 @@ import {
   moveShapeHorizontal,
   startWatching,
   moveShapeDown,
+  toggleMouseControls,
 } from "../../reducers/index";
 import "./Controls.scss";
 import "../../index.scss";
@@ -22,6 +23,8 @@ const Controls = ({
   shapeRotate,
   startWatching,
   moveShapeDown,
+  mouseControlsEnabled,
+  toggleMouseControls,
 }) => {
   const [name, setName] = useState("");
   const [error, setError] = useState("Please type in your username");
@@ -30,25 +33,25 @@ const Controls = ({
     if (!lose && username.length > 0)
       switch (e.code) {
         case "KeyA":
-          if (Date.now() - lastCall > 50) {
+          if (Date.now() - lastCall > 30) {
             moveShapeHorizontal(-1);
             lastCall = Date.now();
           }
           break;
         case "KeyD":
-          if (Date.now() - lastCall > 50) {
+          if (Date.now() - lastCall > 30) {
             moveShapeHorizontal(1);
             lastCall = Date.now();
           }
           break;
         case "KeyQ":
-          if (Date.now() - lastCall > 100) {
+          if (Date.now() - lastCall > 20) {
             shapeRotate(false);
             lastCall = Date.now();
           }
           break;
         case "KeyE":
-          if (Date.now() - lastCall > 100) {
+          if (Date.now() - lastCall > 20) {
             shapeRotate(true);
             lastCall = Date.now();
           }
@@ -114,7 +117,21 @@ const Controls = ({
             {" "}
             watch
           </button>
-          {!lose && <div>{`score: ${score}`}</div>}
+          <div className="d-flex flex-column align-items-center Controls-item">
+            <label for="mouse-control">
+              mouse <br />
+              control{" "}
+            </label>
+            <input
+              type="checkbox"
+              name="mouse-control"
+              checked={mouseControlsEnabled}
+              onChange={(e) => {
+                toggleMouseControls(!mouseControlsEnabled);
+              }}
+            />
+          </div>
+          {!lose && <div className="Controls-item">{`score: ${score}`}</div>}
         </>
       )}
     </div>
@@ -128,6 +145,7 @@ const mapStateToProps = (state) => {
     loading: state.loading,
     users: state.users,
     score: state.score,
+    mouseControlsEnabled: state.mouseControlsEnabled,
   };
 };
 const mapDispatchToProps = {
@@ -137,6 +155,7 @@ const mapDispatchToProps = {
   shapeRotate,
   startWatching,
   moveShapeDown,
+  toggleMouseControls,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Controls);

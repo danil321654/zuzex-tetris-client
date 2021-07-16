@@ -16,6 +16,8 @@ const PlayGround = () => {
     username,
     predictedShape,
     color,
+    oldShape,
+    mouseControlsEnabled,
   } = useSelector((state) => state);
   const playGroundClass = cls({
     "PlayGround-container": true,
@@ -25,10 +27,13 @@ const PlayGround = () => {
   return (
     <div
       className={playGroundClass}
-      onClick={(e) => !lose && store.dispatch(moveShapeDown())}
+      onClick={(e) =>
+        !lose && mouseControlsEnabled && store.dispatch(moveShapeDown())
+      }
       onContextMenu={(e) => {
         e.preventDefault();
-        if (!lose) store.dispatch(shapeRotate(false));
+        console.log(mouseControlsEnabled);
+        if (!lose && mouseControlsEnabled) store.dispatch(shapeRotate(false));
       }}
     >
       <div className="PlayGround-users">
@@ -40,27 +45,21 @@ const PlayGround = () => {
       {playGround.map((row, i) => (
         <div key={`${i}`} className="PlayGround-row">
           {row.map((cell, j) => {
-            const falling = currentShape.some(
-              (dot) => dot.i === i && j === dot.j
-            );
+            const falling = oldShape.some((dot) => dot.i === i && j === dot.j);
             return (
               <Cell
-                currentLeft={
-                  falling &&
-                  !currentShape.some((dot) => dot.i === i && dot.j < j)
-                }
-                currentRight={
-                  falling &&
-                  !currentShape.some((dot) => dot.i === i && dot.j > j)
-                }
-                currentTop={
-                  falling &&
-                  !currentShape.some((dot) => dot.i < i && dot.j === j)
-                }
-                currentBottom={
-                  falling &&
-                  !currentShape.some((dot) => dot.i > i && dot.j === j)
-                }
+                // currentLeft={
+                //   falling && !oldShape.some((dot) => dot.i === i && dot.j < j)
+                // }
+                // currentRight={
+                //   falling && !oldShape.some((dot) => dot.i === i && dot.j > j)
+                // }
+                // currentTop={
+                //   falling && !oldShape.some((dot) => dot.i < i && dot.j === j)
+                // }
+                // currentBottom={
+                //   falling && !oldShape.some((dot) => dot.i > i && dot.j === j)
+                // }
                 key={`${i}${j}`}
                 value={cell}
                 playGroundWidth={playGround[0].length}
@@ -74,7 +73,7 @@ const PlayGround = () => {
                 }
                 color={color}
                 moveShape={() => {
-                  if (currentShape[0] && !lose)
+                  if (currentShape[0] && !lose && mouseControlsEnabled)
                     for (
                       let index = 0;
                       index < Math.abs(-currentShape[0].j + j);
