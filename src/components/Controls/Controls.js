@@ -71,80 +71,90 @@ const Controls = ({
   });
 
   return (
-    <div className="Controls-container">
+    <>
       {lose && username.length > 0 && (
-        <div className="Controls-lose-content">
-          <div className="Controls-lose">
-            lose
-            <div>{`score: ${score}`}</div>
+        <div className="LoseContainer">
+          <div className="Controls-lose-content">
+            <div className={`Controls-lose ${theme}`}>
+              lose
+              <div>{`score: ${score}`}</div>
+              <button
+                className="Controls-button newGame"
+                onClick={() => requestNewGame()}
+              >
+                {" "}
+                reset
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+      <div className="Controls-container">
+        {!username.length ? (
+          <div className={`Controls-item ${theme}`}>
+            {error.length > 0 && <div>{error}</div>}
+            <input
+              value={name}
+              onChange={(e) => setName(e.target.value.split(" ").join(""))}
+            />
             <button
-              className="Controls-button newGame"
-              onClick={() => requestNewGame()}
+              className="Controls-button login"
+              onClick={() => {
+                if (name.length > 0) {
+                  if (!users.includes(name)) {
+                    authorize(name.split(" ").join(""));
+                    setError("Please type in username");
+                  } else setError("User already exists");
+                } else setError("Name cannot be empty");
+              }}
             >
               {" "}
-              reset
+              login
             </button>
           </div>
-        </div>
-      )}
-      {!username.length ? (
-        <div className="Controls-item">
-          {error.length > 0 && <div>{error}</div>}
-          <input
-            value={name}
-            onChange={(e) => setName(e.target.value.split(" ").join(""))}
-          />
-          <button
-            className="Controls-button login"
-            onClick={() => {
-              if (name.length > 0) {
-                if (!users.includes(name)) {
-                  authorize(name.split(" ").join(""));
-                  setError("Please type in username");
-                } else setError("User already exists");
-              } else setError("Name cannot be empty");
-            }}
-          >
-            {" "}
-            login
-          </button>
-        </div>
-      ) : (
-        <>
-          <ShapePreview text={"next shape:"} />
-          <button
-            className="Controls-button newGame"
-            onClick={() => startWatching()}
-          >
-            {" "}
-            watch
-          </button>
-          <div className="d-flex flex-column align-items-center Controls-item">
-            <label for="mouse-control">
-              mouse <br />
-              control{" "}
-            </label>
-            <input
-              type="checkbox"
-              name="mouse-control"
-              checked={mouseControlsEnabled}
-              onChange={(e) => {
-                toggleMouseControls(!mouseControlsEnabled);
-              }}
-            />
-          </div>
-          {!lose && <div className="Controls-item">{`score: ${score}`}</div>}
-          <div className="Controls-themeSelect">
-            {themes
-              .filter((_theme) => _theme !== theme)
-              .slice(0, 3)
-              .map((_theme) => (
-                <ShapePreview text={_theme} />
-              ))}
-          </div>
-        </>
-      )}
-    </div>
+        ) : (
+          <>
+            <ShapePreview text={"next shape:"} />
+            <button
+              className={`Controls-button newGame ${theme}`}
+              onClick={() => startWatching()}
+            >
+              {" "}
+              watch
+            </button>
+            <div
+              className={`d-flex flex-column align-items-center Controls-item ${theme}`}
+            >
+              <label for="mouse-control">
+                mouse <br />
+                control{" "}
+              </label>
+              <input
+                type="checkbox"
+                name="mouse-control"
+                checked={mouseControlsEnabled}
+                onChange={(e) => {
+                  toggleMouseControls(!mouseControlsEnabled);
+                }}
+              />
+            </div>
+            {!lose && (
+              <div
+                className={`Controls-item ${theme}`}
+              >{`score: ${score}`}</div>
+            )}
+            <div className="Controls-themeSelect">
+              {themes
+                .filter((_theme) => _theme !== theme)
+                .slice(0, 3)
+                .map((_theme) => (
+                  <ShapePreview text={_theme} />
+                ))}
+            </div>
+          </>
+        )}
+      </div>
+    </>
   );
 };
 

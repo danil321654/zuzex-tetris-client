@@ -1,10 +1,9 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import cls from "classnames";
 import Cell from "../Cell";
 import "./PlayGround.scss";
 import { moveShapeDown, moveShapeHorizontal } from "../../reducers";
-import store from "../../store";
 import { shapeRotate } from "../../reducers/index";
 import "../../index.scss";
 const PlayGround = () => {
@@ -20,6 +19,7 @@ const PlayGround = () => {
     mouseControlsEnabled,
     theme,
   } = useSelector((state) => state);
+  const dispatch = useDispatch();
   const playGroundClass = cls({
     "PlayGround-container": true,
     inactive: lose && username.length,
@@ -30,12 +30,12 @@ const PlayGround = () => {
     <div
       className={playGroundClass}
       onClick={(e) =>
-        !lose && mouseControlsEnabled && store.dispatch(moveShapeDown())
+        !lose && mouseControlsEnabled && dispatch(moveShapeDown())
       }
       onContextMenu={(e) => {
         e.preventDefault();
         console.log(mouseControlsEnabled);
-        if (!lose && mouseControlsEnabled) store.dispatch(shapeRotate(false));
+        if (!lose && mouseControlsEnabled) dispatch(shapeRotate(false));
       }}
     >
       <div className="PlayGround-users">
@@ -81,7 +81,7 @@ const PlayGround = () => {
                       index < Math.abs(-currentShape[0].j + j);
                       index++
                     ) {
-                      store.dispatch(
+                      dispatch(
                         moveShapeHorizontal(-currentShape[0].j + j < 0 ? -1 : 1)
                       );
                     }
