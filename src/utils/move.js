@@ -1,3 +1,4 @@
+import { deepCopy } from "./deepCopy";
 export const move = (playGround, newShape, oldShape) => {
   const difference = newShape.filter(
     (el) => !oldShape.some((dot) => el.i === dot.i && el.j === dot.j)
@@ -29,9 +30,7 @@ export const move = (playGround, newShape, oldShape) => {
 
 export const predictMove = (playGround, currentShape) => {
   if (currentShape.length === 0) return currentShape;
-  const currentShapeCopy = JSON.parse(JSON.stringify(currentShape)).map(
-    (el) => ({ i: +el.i, j: +el.j })
-  );
+  const currentShapeCopy = deepCopy(currentShape);
   currentShapeCopy.sort((a, b) => b.i - a.i);
   while (
     currentShapeCopy.every(
@@ -44,9 +43,7 @@ export const predictMove = (playGround, currentShape) => {
     currentShapeCopy.forEach((block) => {
       block.i++;
     });
-    let lowerBlocks = JSON.parse(JSON.stringify(currentShapeCopy)).map(
-      (el) => ({ i: +el.i, j: +el.j })
-    );
+    let lowerBlocks = deepCopy(currentShapeCopy);
     lowerBlocks.sort((a, b) => b.i - a.i);
     lowerBlocks = lowerBlocks.filter(
       (el, ind) => !lowerBlocks.slice(0, ind).some((dot) => dot.j === el.j)
@@ -62,11 +59,11 @@ export const predictMove = (playGround, currentShape) => {
 };
 
 export const horizontalMoveHandle = (state, action) => {
-  const swap = JSON.parse(JSON.stringify(state.oldShape));
-  state.oldShape = JSON.parse(JSON.stringify(state.currentShape));
+  const swap = deepCopy(state.oldShape);
+  state.oldShape = deepCopy(state.currentShape);
   state.move = [];
 
-  let sideBlocks = JSON.parse(JSON.stringify(state.currentShape));
+  let sideBlocks = deepCopy(state.currentShape);
   sideBlocks.sort((a, b) => b.j - a.j);
 
   const sideBlocksRight = sideBlocks.filter(
@@ -109,18 +106,10 @@ export const horizontalMoveHandle = (state, action) => {
 };
 
 export const verticalMoveHandle = (state, action) => {
-  const swap = JSON.parse(JSON.stringify(state.oldShape)).map((el) => ({
-    i: +el.i,
-    j: +el.j,
-  }));
-  state.oldShape = JSON.parse(JSON.stringify(state.currentShape)).map((el) => ({
-    i: +el.i,
-    j: +el.j,
-  }));
+  const swap = deepCopy(state.oldShape);
+  state.oldShape = deepCopy(state.currentShape);
   state.move = [];
-  let lowerBlocks = JSON.parse(JSON.stringify(state.currentShape)).map(
-    (el) => ({ i: +el.i, j: +el.j })
-  );
+  let lowerBlocks = deepCopy(state.currentShape);
   lowerBlocks.sort((a, b) => b.i - a.i);
   lowerBlocks = lowerBlocks.filter(
     (el, ind) => !lowerBlocks.some((dot) => dot.j === el.j && dot.i > el.i)

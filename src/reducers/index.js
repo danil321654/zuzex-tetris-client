@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { getRandomShape } from "../utils/getRandomShape";
+import { deepCopy } from "../utils/deepCopy";
 import {
   horizontalMoveHandle,
   predictMove,
@@ -7,7 +8,6 @@ import {
 } from "../utils/move";
 import { rotate } from "../utils/rotate";
 import Timer, { intervalFunc } from "../utils/gameInterval";
-import { getRandomInt } from "../utils/getRandomColor";
 
 const initialField = [];
 
@@ -65,7 +65,7 @@ const playGroundSlice = createSlice({
     },
     spawnShape(state) {
       state.oldShape = [];
-      if (!state.lose) {
+      if (!state.lose && state.currentShape.length === 0) {
         state.currentShape =
           state.nextShape.length > 0
             ? state.nextShape.map((el) => ({
@@ -94,17 +94,14 @@ const playGroundSlice = createSlice({
     },
     shapeRotate(state, action) {
       state.rotateMove = [];
-      const swap = JSON.parse(JSON.stringify(state.currentShape)).map((el) => ({
-        i: +el.i,
-        j: +el.j,
-      }));
+      const swap = deepCopy(state.currentShape);
       state.rotateMove = rotate(
         state.playGround,
         state.currentShape,
         action.payload
       );
       if (state.rotateMove.length) {
-        state.currentShape = JSON.parse(JSON.stringify(state.rotateMove));
+        state.currentShape = deepCopy(state.rotateMove);
         state.oldShape = swap;
       } else {
         state.currentShape = swap;

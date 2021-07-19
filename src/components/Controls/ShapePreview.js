@@ -1,7 +1,6 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import cls from "classnames";
-// import { getRandomShape } from "../../utils/getRandomShape";
 import { themes } from "../../utils/themes";
 import Cell from "../Cell";
 import { changeTheme } from "../../reducers";
@@ -25,30 +24,16 @@ const ShapePreview = ({ text = "" }) => {
       <div>
         {blocks.map((row, i) => (
           <div key={`$prev${i}`} className="PlayGround-row">
-            {row.map(
-              (dot, j) =>
-                nextShape.some((block) => block.i === i && block.j === j) && (
-                  <Cell key={`$prev${i}${j}`} predicted color={nextColor} />
-                )
+            {row.map((dot, j) =>
+              nextShape.some((block) => block.i === i && block.j === j) ? (
+                <Cell key={`$prev${i}${j}`} predicted color={nextColor} />
+              ) : (
+                <Cell key={`$prev${i}${j}`} none />
+              )
             )}
           </div>
         ))}
       </div>
-      {/* <div className="PlayGround-row">
-        <Cell none />
-        <Cell none />
-        <Cell none />
-      </div>{" "}
-      <div className="PlayGround-row">
-        <Cell none />
-        <Cell none />
-        <Cell active />
-      </div>{" "}
-      <div className="PlayGround-row">
-        <Cell active />
-        <Cell active />
-        <Cell active />
-      </div>{" "} */}
     </div>
   );
 };

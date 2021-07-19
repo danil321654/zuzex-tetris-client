@@ -26,6 +26,13 @@ const PlayGround = () => {
     [`${theme}`]: true,
   });
 
+  const moveShapeByMouse = ({ i, j }) => {
+    if (currentShape[0] && !lose && mouseControlsEnabled)
+      for (let index = 0; index < Math.abs(-currentShape[0].j + j); index++) {
+        dispatch(moveShapeHorizontal(-currentShape[0].j + j < 0 ? -1 : 1));
+      }
+  };
+
   return (
     <div
       className={playGroundClass}
@@ -74,18 +81,7 @@ const PlayGround = () => {
                   predictedShape.some((dot) => dot.i === i && j === dot.j)
                 }
                 color={color}
-                moveShape={() => {
-                  if (currentShape[0] && !lose && mouseControlsEnabled)
-                    for (
-                      let index = 0;
-                      index < Math.abs(-currentShape[0].j + j);
-                      index++
-                    ) {
-                      dispatch(
-                        moveShapeHorizontal(-currentShape[0].j + j < 0 ? -1 : 1)
-                      );
-                    }
-                }}
+                moveShape={() => moveShapeByMouse({ i, j })}
               />
             );
           })}

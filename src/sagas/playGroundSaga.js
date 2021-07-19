@@ -1,47 +1,15 @@
-import { put, select, takeEvery, takeLatest } from "redux-saga/effects";
+import { put, select, takeEvery, takeLatest, all } from "redux-saga/effects";
 
 import {
-  connectSocket,
   moveShapeHorizontal,
   spawnShape,
   moveShapeVertical,
   shapeLand,
   shapeRotate,
-  lose,
-  authorize,
-  newGame,
-  requestNewGame,
-  startWatching,
   moveShapeDown,
 } from "../reducers/index";
 import socket from "../api";
 
-export function* handleAuthorize() {
-  try {
-    const username = yield select((state) => state.username);
-    yield socket.emit("authorize", username);
-  } catch (error) {
-    console.log(error);
-  }
-}
-export function* handleNewGame() {
-  try {
-    const timer = yield select((state) => state.timer);
-    const moveInterval = yield select((state) => state.moveInterval);
-    yield timer.reset(moveInterval);
-    yield timer.stop();
-    yield put(spawnShape());
-  } catch (error) {
-    console.log(error);
-  }
-}
-export function* handlePlayGroundLoad() {
-  try {
-    yield put(spawnShape());
-  } catch (error) {
-    console.log(error);
-  }
-}
 export function* handleShapeAppear() {
   try {
     const shapeAppear = yield select((state) => state.currentShape);
@@ -85,6 +53,7 @@ export function* handleShapeDown() {
         newMove.map((move) => ({ ...move, color }))
       );
       yield socket.emit("land");
+      yield put(shapeLand());
       yield put(spawnShape());
     }
   } catch (error) {
@@ -112,46 +81,13 @@ export function* handleShapeLand() {
   }
 }
 
-export function* handleLose() {
-  try {
-    const timer = yield select((state) => state.timer);
-    yield timer.stop();
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-export function* handleRequestNewGame() {
-  try {
-    const timer = yield select((state) => state.timer);
-    yield timer.stop();
-    yield socket.emit("reset");
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-export function* handleStartWatching() {
-  try {
-    const timer = yield select((state) => state.timer);
-    timer.stop();
-    yield socket.disconnect().connect();
-  } catch (error) {
-    console.log(error);
-  }
-}
-
 export default function* watchPlayGround() {
-  yield takeLatest(authorize, handleAuthorize);
-  yield takeLatest(connectSocket, handlePlayGroundLoad);
-  yield takeLatest(spawnShape, handleShapeAppear);
-  yield takeEvery(shapeRotate, handleShapeRotate);
-  yield takeEvery(moveShapeHorizontal, handleShapeMove);
-  yield takeEvery(moveShapeVertical, handleShapeMove);
-  yield takeEvery(moveShapeDown, handleShapeDown);
-  yield takeEvery(shapeLand, handleShapeLand);
-  yield takeLatest(lose, handleLose);
-  yield takeLatest(requestNewGame, handleRequestNewGame);
-  yield takeLatest(newGame, handleNewGame);
-  yield takeLatest(startWatching, handleStartWatching);
+  yield all([
+    takeEvery(shapeRotate, handleShapeRotate),
+    takeEvery(moveShapeHorizontal, handleShapeMove),
+    takeLatest(spawnShape, handleShapeAppear),
+    takeEvery(moveShapeVertical, handleShapeMove),
+    takeEvery(moveShapeDown, handleShapeDown),
+    takeEvery(shapeLand, handleShapeLand),
+  ]);
 }

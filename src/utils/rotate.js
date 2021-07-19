@@ -1,9 +1,7 @@
+import { deepCopy } from "./deepCopy";
 export const rotate = (playGround, oldShape, right = false) => {
   if (oldShape.length === 0) return oldShape;
-  let newShape = JSON.parse(JSON.stringify(oldShape)).map((el) => ({
-    i: +el.i,
-    j: +el.j,
-  }));
+  let newShape = deepCopy(oldShape);
   newShape.sort((a, b) => b.i - a.i);
 
   const minLeft = Math.min(...newShape.map((el) => el.j));
@@ -60,5 +58,5 @@ export const rotate = (playGround, oldShape, right = false) => {
     )
   )
     return oldShape;
-  return JSON.parse(JSON.stringify(newShape));
+  return deepCopy(newShape);
 };

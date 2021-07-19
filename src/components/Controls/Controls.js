@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import ShapePreview from "./ShapePreview";
+import { themes } from "../../utils/themes";
 import {
   authorize,
   requestNewGame,
@@ -12,7 +13,7 @@ import {
 } from "../../reducers/index";
 import "./Controls.scss";
 import "../../index.scss";
-import { themes } from "../../utils/themes";
+
 const Controls = ({
   username,
   lose,
@@ -30,21 +31,29 @@ const Controls = ({
 }) => {
   const [name, setName] = useState("");
   const [error, setError] = useState("Please type in your username");
-  let lastCall = 0;
+
+  const handleLogin = () => {
+    if (name.length > 0) {
+      if (!users.includes(name)) {
+        authorize(name.split(" ").join(""));
+        setError("Please type in username");
+      } else setError("User already exists");
+    } else setError("Name cannot be empty");
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    handleLogin();
+  };
+
   const dispatchMove = (e) => {
     if (!lose && username.length > 0)
       switch (e.code) {
         case "KeyA":
-          if (Date.now() - lastCall > 10) {
-            moveShapeHorizontal(-1);
-            lastCall = Date.now();
-          }
+          moveShapeHorizontal(-1);
           break;
         case "KeyD":
-          if (Date.now() - lastCall > 10) {
-            moveShapeHorizontal(1);
-            lastCall = Date.now();
-          }
+          moveShapeHorizontal(1);
           break;
         case "KeyQ":
           shapeRotate(false);
@@ -55,6 +64,7 @@ const Controls = ({
         case "KeyS":
           moveShapeDown();
           break;
+
         default:
           break;
       }
@@ -85,27 +95,17 @@ const Controls = ({
       )}
       <div className="Controls-container">
         {!username.length ? (
-          <div className={`Controls-item ${theme}`}>
+          <form onSubmit={handleSubmit} className={`Controls-item ${theme}`}>
             {error.length > 0 && <div>{error}</div>}
             <input
               value={name}
               onChange={(e) => setName(e.target.value.split(" ").join(""))}
             />
-            <button
-              className="Controls-button login"
-              onClick={() => {
-                if (name.length > 0) {
-                  if (!users.includes(name)) {
-                    authorize(name.split(" ").join(""));
-                    setError("Please type in username");
-                  } else setError("User already exists");
-                } else setError("Name cannot be empty");
-              }}
-            >
+            <button className="Controls-button login" onClick={handleLogin}>
               {" "}
               login
             </button>
-          </div>
+          </form>
         ) : (
           <>
             <ShapePreview text={"next shape:"} />
@@ -119,7 +119,7 @@ const Controls = ({
             <div
               className={`d-flex flex-column align-items-center Controls-item ${theme}`}
             >
-              <label for="mouse-control">
+              <label htmlFor="mouse-control">
                 mouse <br />
                 control{" "}
               </label>
@@ -141,8 +141,8 @@ const Controls = ({
               {themes
                 .filter((_theme) => _theme !== theme)
                 .slice(0, 3)
-                .map((_theme) => (
-                  <ShapePreview text={_theme} />
+                .map((_theme, ind) => (
+                  <ShapePreview key={ind} text={_theme} />
                 ))}
             </div>
           </>

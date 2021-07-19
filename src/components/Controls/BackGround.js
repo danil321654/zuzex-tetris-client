@@ -1,5 +1,5 @@
 import React from "react";
-import { getRandomInt } from "../../utils/getRandomColor";
+import { getRandomInt } from "../../utils/getRandomInt";
 import cls from "classnames";
 import Cell from "../Cell";
 import { useSelector } from "react-redux";
@@ -16,7 +16,7 @@ const Background = () => {
       <div>
         {blocks.map((row, i) => (
           <div key={`$back${i}`} className="PlayGround-row">
-            {row.map((cell, j) => (
+            {row.map((_, j) => (
               <Cell
                 key={`$back${i}${j}`}
                 predicted

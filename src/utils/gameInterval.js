@@ -1,5 +1,6 @@
 import store from "../store";
 import { moveShapeVertical, shapeLand, spawnShape } from "../reducers/index";
+import { deepCopy } from "./deepCopy";
 import { move } from "./move";
 
 function Timer(fn, t) {
@@ -42,10 +43,10 @@ export const intervalFunc = () => {
   const playGround = store.getState().playGround;
   const newMove = move(playGround, newShape, currentShape);
 
-  let lowerBlocks = JSON.parse(JSON.stringify(newMove));
+  let lowerBlocks = deepCopy(newMove);
   lowerBlocks.sort((a, b) => b.i - a.i);
   lowerBlocks = lowerBlocks.filter(
-    (el, ind) => !lowerBlocks.some((dot) => dot.j === el.j && dot.i > el.i)
+    (el) => !lowerBlocks.some((dot) => dot.j === el.j && dot.i > el.i)
   );
   if (lowerBlocks.some((dot) => playGround[dot.i][dot.j] > 10)) {
     store.dispatch(moveShapeVertical(-1));

@@ -1,7 +1,7 @@
 import React from "react";
 import cls from "classnames";
-import { colors } from "../../utils/getRandomColor";
-
+import { colors } from "../../utils/colors";
+/* waterfall causes performance issues*/
 const Cell = ({
   value,
   // waterfall,
