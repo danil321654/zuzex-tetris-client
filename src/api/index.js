@@ -8,7 +8,7 @@ import {
 const io = require("socket.io-client");
 
 const socket = io("https://zuzex-tetris-server.herokuapp.com/");
-//const socket = io("http://192.168.5.22:4002");
+//const socket = io("http://192.168.2.42:4002/");
 socket.on("you-connected", (payload) => {
   store.dispatch(connectSocket(payload));
 });
