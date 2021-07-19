@@ -46,32 +46,52 @@ const Controls = ({
     handleLogin();
   };
 
-  const dispatchMove = (e) => {
-    if (!lose && username.length > 0)
-      switch (e.code) {
-        case "KeyA":
-          moveShapeHorizontal(-1);
-          break;
-        case "KeyD":
-          moveShapeHorizontal(1);
-          break;
-        case "KeyQ":
-          shapeRotate(false);
-          break;
-        case "KeyE":
-          shapeRotate(true);
-          break;
-        case "KeyS":
-          moveShapeDown();
-          break;
-
-        default:
-          break;
-      }
-  };
   useEffect(() => {
+    let lastEvent;
+    let heldKeys = {};
+    let lastTime = 0;
+    const dispatchMove = (e) => {
+      lastEvent = e;
+      heldKeys[e.keyCode] = true;
+      if (!lose && username.length > 0)
+        switch (e.code) {
+          case "KeyA":
+            if (Date.now() - lastTime > 60) {
+              moveShapeHorizontal(-1);
+              lastTime = Date.now();
+            }
+            break;
+          case "KeyD":
+            if (Date.now() - lastTime > 60) {
+              moveShapeHorizontal(1);
+              lastTime = Date.now();
+            }
+            break;
+          case "KeyQ":
+            shapeRotate(false);
+            break;
+          case "KeyE":
+            shapeRotate(true);
+            break;
+          case "KeyS":
+            moveShapeDown();
+            break;
+
+          default:
+            break;
+        }
+    };
+    const onKeyUp = (e) => {
+      lastEvent = null;
+      lastTime = 0;
+      delete heldKeys[e.keyCode];
+    };
     document.addEventListener("keydown", dispatchMove);
-    return () => document.removeEventListener("keydown", dispatchMove);
+    document.addEventListener("keyup", onKeyUp);
+    return () => {
+      document.removeEventListener("keydown", dispatchMove);
+      document.removeEventListener("keyup", onKeyUp);
+    };
   });
 
   return (
@@ -116,7 +136,7 @@ const Controls = ({
               {" "}
               watch
             </button>
-            <div
+            {/* <div
               className={`d-flex flex-column align-items-center Controls-item ${theme}`}
             >
               <label htmlFor="mouse-control">
@@ -131,7 +151,7 @@ const Controls = ({
                   toggleMouseControls(!mouseControlsEnabled);
                 }}
               />
-            </div>
+            </div> */}
             {!lose && (
               <div
                 className={`Controls-item ${theme}`}
