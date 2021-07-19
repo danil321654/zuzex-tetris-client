@@ -47,12 +47,8 @@ const Controls = ({
   };
 
   useEffect(() => {
-    let lastEvent;
-    let heldKeys = {};
     let lastTime = 0;
     const dispatchMove = (e) => {
-      lastEvent = e;
-      heldKeys[e.keyCode] = true;
       if (!lose && username.length > 0)
         switch (e.code) {
           case "KeyA":
@@ -82,9 +78,7 @@ const Controls = ({
         }
     };
     const onKeyUp = (e) => {
-      lastEvent = null;
       lastTime = 0;
-      delete heldKeys[e.keyCode];
     };
     document.addEventListener("keydown", dispatchMove);
     document.addEventListener("keyup", onKeyUp);
