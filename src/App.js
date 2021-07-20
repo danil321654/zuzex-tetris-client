@@ -7,11 +7,11 @@ import Loader from "./components/Loader";
 import Background from "./components/Background";
 import "./index.scss";
 function App() {
-  const { loading, lose } = useSelector((state) => state);
+  const { loading, lose, username } = useSelector((state) => state);
   return (
     <>
       <Background />
-      {lose && <LoseModal />}
+      {username.length && lose && <LoseModal />}
       <Controls />
       {!loading ? <PlayGround /> : <Loader />}
     </>
