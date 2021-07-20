@@ -1,12 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { getRandomShape } from "../utils/getRandomShape";
-import { deepCopy } from "../utils/deepCopy";
 import {
   horizontalMoveHandle,
-  predictMove,
+  predictDownMove,
   verticalMoveHandle,
 } from "../utils/move";
-import { rotate } from "../utils/rotate";
+import { rotateHandle } from "../utils/rotateHandle";
 import Timer, { intervalFunc } from "../utils/gameInterval";
 
 const initialField = [];
@@ -15,13 +14,11 @@ const initialState = {
   playGround: initialField,
   loading: true,
   mouseControlsEnabled: false,
-  oldShape: [],
   currentShape: [],
   nextShape: [],
   nextColor: -1,
   predictedShape: [],
   move: [],
-  rotateMove: [],
   timer: new Timer(intervalFunc, 300),
   position: 0,
   lose: false,
@@ -36,7 +33,9 @@ const playGroundSlice = createSlice({
   name: "playGround",
   initialState,
   reducers: {
-    connectSocket(state, action) {
+    connectToGame(state, action) {
+      state.currentShape = [];
+      state.move = [];
       state.playGround = action.payload.playGround;
       state.position = action.payload.position;
       state.loading = true;
@@ -48,7 +47,6 @@ const playGroundSlice = createSlice({
     applyPlayGround(state, action) {
       state.playGround = action.payload.playGround;
       if (action.payload.names) state.users = action.payload.names;
-
       if (action.payload.position) state.position = action.payload.position;
       else if (state.username) {
         state.position = Math.ceil(
@@ -58,13 +56,14 @@ const playGroundSlice = createSlice({
         );
       }
       state.loading = state.playGround[0].length === 0;
-      state.predictedShape = predictMove(state.playGround, state.currentShape);
       state.score = action.payload.score;
       state.moveInterval = action.payload.moveInterval;
-      state.oldShape = [...state.currentShape];
+      state.predictedShape = predictDownMove(
+        state.playGround,
+        state.currentShape
+      );
     },
     spawnShape(state) {
-      state.oldShape = [];
       if (!state.lose && state.currentShape.length === 0) {
         state.currentShape =
           state.nextShape.length > 0
@@ -83,29 +82,34 @@ const playGroundSlice = createSlice({
       state.lose = false;
     },
     moveShapeHorizontal(state, action) {
-      horizontalMoveHandle(state, action);
-    },
-    moveShapeVertical(state, action) {
-      verticalMoveHandle(state, action);
-    },
-    shapeLand(state) {
-      state.oldShape = [];
-      state.currentShape = [];
-    },
-    shapeRotate(state, action) {
-      state.rotateMove = [];
-      const swap = deepCopy(state.currentShape);
-      state.rotateMove = rotate(
+      const result = horizontalMoveHandle(
         state.playGround,
         state.currentShape,
         action.payload
       );
-      if (state.rotateMove.length) {
-        state.currentShape = deepCopy(state.rotateMove);
-        state.oldShape = swap;
-      } else {
-        state.currentShape = swap;
-      }
+      state.currentShape = [...result];
+      state.move = [...result];
+    },
+    moveShapeVertical(state, action) {
+      const result = verticalMoveHandle(
+        state.playGround,
+        state.currentShape,
+        action.payload
+      );
+      state.currentShape = [...result];
+      state.move = [...result];
+    },
+    shapeRotate(state, action) {
+      const result = rotateHandle(
+        state.playGround,
+        state.currentShape,
+        action.payload
+      );
+      state.currentShape = [...result];
+      state.move = [...result];
+    },
+    shapeLand(state) {
+      state.currentShape = [];
     },
     lose(state, action) {
       state.lose = true;
@@ -120,10 +124,6 @@ const playGroundSlice = createSlice({
     },
     requestNewGame() {},
     startWatching(state) {
-      state.currentShape = [];
-      state.oldShape = [];
-      state.move = [];
-      state.rotateMove = [];
       state.username = "";
       state.loading = true;
     },
@@ -144,7 +144,7 @@ const playGroundSlice = createSlice({
 
 export const {
   applyPlayGround,
-  connectSocket,
+  connectToGame,
   spawnShape,
   moveShapeHorizontal,
   moveShapeVertical,

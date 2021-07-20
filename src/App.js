@@ -1,17 +1,19 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import PlayGround from "./components/PlayGround";
+import LoseModal from "./components/Controls/LoseModal";
 import Controls from "./components/Controls";
 import Loader from "./components/Loader";
-import Background from "./components/Controls/BackGround";
+import Background from "./components/Background";
 import "./index.scss";
 function App() {
-  const loading = useSelector((state) => state.loading);
+  const { loading, lose } = useSelector((state) => state);
   return (
     <>
+      <Background />
+      {lose && <LoseModal />}
       <Controls />
       {!loading ? <PlayGround /> : <Loader />}
-      <Background />
     </>
   );
 }

@@ -52,23 +52,9 @@ export function* handleShapeDown() {
         "move",
         newMove.map((move) => ({ ...move, color }))
       );
-      yield socket.emit("land");
       yield put(shapeLand());
       yield put(spawnShape());
     }
-  } catch (error) {
-    console.log(error);
-  }
-}
-export function* handleShapeRotate() {
-  try {
-    const newMove = yield select((state) => state.rotateMove);
-    const color = yield select((state) => state.color);
-    if (newMove.length)
-      yield socket.emit(
-        "move",
-        newMove.map((move) => ({ ...move, color }))
-      );
   } catch (error) {
     console.log(error);
   }
@@ -83,9 +69,9 @@ export function* handleShapeLand() {
 
 export default function* watchPlayGround() {
   yield all([
-    takeEvery(shapeRotate, handleShapeRotate),
-    takeEvery(moveShapeHorizontal, handleShapeMove),
     takeLatest(spawnShape, handleShapeAppear),
+    takeEvery(shapeRotate, handleShapeMove),
+    takeEvery(moveShapeHorizontal, handleShapeMove),
     takeEvery(moveShapeVertical, handleShapeMove),
     takeEvery(moveShapeDown, handleShapeDown),
     takeEvery(shapeLand, handleShapeLand),

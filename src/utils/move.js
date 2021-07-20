@@ -11,138 +11,70 @@ export const move = (playGround, newShape, oldShape) => {
     )
   )
     return [];
-
-  const toRender = difference.filter((dot, ind) => {
-    return (
-      dot.i < playGround.length &&
-      dot.j < playGround[0].length &&
-      (playGround[dot.i][dot.j] === 0 || playGround[dot.i][dot.j] > 10)
-    );
-  });
-
-  const toDelete = oldShape.filter(
-    (dot) => !newShape.some((el) => el.i === dot.i && el.j === dot.j)
-  );
-  if (toRender.length !== toDelete.length) return [];
-
-  return [...toRender, ...toDelete];
+  return difference;
 };
 
-export const predictMove = (playGround, currentShape) => {
+export const predictDownMove = (playGround, currentShape) => {
   if (currentShape.length === 0) return currentShape;
-  const currentShapeCopy = deepCopy(currentShape);
-  currentShapeCopy.sort((a, b) => b.i - a.i);
+  const shapeCopy = deepCopy(currentShape);
+  shapeCopy.sort((a, b) => b.i - a.i);
   while (
-    currentShapeCopy.every(
+    shapeCopy.every(
       (dot) =>
         playGround[dot.i + 1] &&
         (playGround[dot.i + 1][dot.j] === 0 ||
           playGround[dot.i + 1][dot.j] > 10)
     )
   ) {
-    currentShapeCopy.forEach((block) => {
+    shapeCopy.forEach((block) => {
       block.i++;
     });
-    let lowerBlocks = deepCopy(currentShapeCopy);
-    lowerBlocks.sort((a, b) => b.i - a.i);
-    lowerBlocks = lowerBlocks.filter(
-      (el, ind) => !lowerBlocks.slice(0, ind).some((dot) => dot.j === el.j)
+    const bottomBlocks = shapeCopy.filter(
+      (el) => !shapeCopy.some((dot) => dot.j === el.j && dot.i > el.i)
     );
     if (
-      lowerBlocks.some(
+      bottomBlocks.some(
         (dot) => playGround[dot.i] && playGround[dot.i][dot.j] > 10
       )
     )
       return [];
   }
-  return currentShapeCopy;
+  return shapeCopy;
 };
 
-export const horizontalMoveHandle = (state, action) => {
-  const swap = deepCopy(state.oldShape);
-  state.oldShape = deepCopy(state.currentShape);
-  state.move = [];
+export const horizontalMoveHandle = (playGround, currentShape, offset) => {
+  const shapeCopy = deepCopy(currentShape);
 
-  let sideBlocks = deepCopy(state.currentShape);
-  sideBlocks.sort((a, b) => b.j - a.j);
-
-  const sideBlocksRight = sideBlocks.filter(
-    (el, ind) => !sideBlocks.some((dot) => dot.i === el.i && dot.j > el.j)
+  const sideBlocksRight = shapeCopy.filter(
+    (el) => !shapeCopy.some((dot) => dot.i === el.i && dot.j > el.j)
   );
-  sideBlocks.sort((a, b) => -b.j + a.j);
-  const sideBlocksLeft = sideBlocks.filter(
-    (el, ind) => !sideBlocks.some((dot) => dot.i === el.i && dot.j < el.j)
+  const sideBlocksLeft = shapeCopy.filter(
+    (el) => !shapeCopy.some((dot) => dot.i === el.i && dot.j < el.j)
   );
-  sideBlocks = action.payload < 0 ? sideBlocksLeft : sideBlocksRight;
-  for (let index = 0; index < sideBlocks.length; index++) {
-    if (
-      sideBlocks[index].j + action.payload < 0 ||
-      state.playGround[sideBlocks[index].i][
-        sideBlocks[index].j + action.payload
-      ] > 0
-    ) {
-      state.currentShape = state.oldShape;
-      state.oldShape = swap;
-      return;
-    }
-  }
+  const sideBlocks = offset < 0 ? sideBlocksLeft : sideBlocksRight;
 
-  for (let index = 0; index < state.currentShape.length; index++) {
-    if (
-      state.currentShape[index].j + action.payload >=
-        state.playGround[0].length ||
-      state.currentShape[index].j + action.payload < 0
-      // ||state.playGround.length <= state.currentShape[index].i + 1
-    ) {
-      state.currentShape = state.oldShape;
-      state.oldShape = swap;
-      break;
-    } else
-      state.currentShape[index].j =
-        state.currentShape[index].j + action.payload;
-  }
+  if (sideBlocks.some((el) => playGround[el.i][el.j + offset] !== 0))
+    return currentShape;
 
-  state.move = [...state.currentShape];
+  return shapeCopy.map((el) => ({ ...el, j: el.j + offset }));
 };
 
-export const verticalMoveHandle = (state, action) => {
-  const swap = deepCopy(state.oldShape);
-  state.oldShape = deepCopy(state.currentShape);
-  state.move = [];
-  let lowerBlocks = deepCopy(state.currentShape);
-  lowerBlocks.sort((a, b) => b.i - a.i);
-  lowerBlocks = lowerBlocks.filter(
-    (el, ind) => !lowerBlocks.some((dot) => dot.j === el.j && dot.i > el.i)
+export const verticalMoveHandle = (playGround, currentShape, offset) => {
+  const shapeCopy = deepCopy(currentShape);
+
+  const bottomBlocks = deepCopy(currentShape).filter(
+    (el) => !shapeCopy.some((dot) => dot.j === el.j && dot.i > el.i)
   );
-  for (let index = 0; index < lowerBlocks.length; index++) {
-    if (
-      lowerBlocks[index].i + action.payload >= state.playGround.length ||
-      (state.playGround[lowerBlocks[index].i + action.payload][
-        lowerBlocks[index].j
-      ] < 10 &&
-        state.playGround[lowerBlocks[index].i + action.payload][
-          lowerBlocks[index].j
-        ] > 0)
-    ) {
-      state.currentShape = state.oldShape;
-      state.oldShape = swap;
-      return;
-    }
-  }
-  for (let index = 0; index < state.currentShape.length; index++) {
-    if (
-      state.currentShape[index].i + action.payload >= state.playGround.length ||
-      state.currentShape[index].i + action.payload <= 0
-    ) {
-      state.currentShape = state.oldShape;
-      state.oldShape = swap;
-      return;
-    } else
-      state.currentShape[index].i =
-        state.currentShape[index].i + action.payload;
-  }
+  if (
+    bottomBlocks.some(
+      (el) =>
+        el.i + offset >= playGround.length ||
+        el.i + offset <= 0 ||
+        (playGround[el.i + offset][el.j] < 10 &&
+          playGround[el.i + offset][el.j] > 0)
+    )
+  )
+    return currentShape;
 
-  state.oldShape = [];
-
-  state.move = state.currentShape;
+  return shapeCopy.map((el) => ({ ...el, i: el.i + offset }));
 };

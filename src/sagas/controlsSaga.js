@@ -1,7 +1,7 @@
 import { put, select, takeLatest, all } from "redux-saga/effects";
 
 import {
-  connectSocket,
+  connectToGame,
   spawnShape,
   lose,
   authorize,
@@ -70,7 +70,7 @@ export function* handleStartWatching() {
 export default function* watchControls() {
   yield all([
     takeLatest(authorize, handleAuthorize),
-    takeLatest(connectSocket, handlePlayGroundLoad),
+    takeLatest(connectToGame, handlePlayGroundLoad),
     takeLatest(lose, handleLose),
     takeLatest(requestNewGame, handleRequestNewGame),
     takeLatest(newGame, handleNewGame),
