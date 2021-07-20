@@ -24,12 +24,12 @@ const Loader = () => {
       <div className="PlayGround-row">
         <Cell none />
         <Cell none />
-        <Cell predicted color={randomColor} />
+        <Cell color={randomColor} />
       </div>{" "}
       <div className="PlayGround-row">
-        <Cell predicted color={randomColor} />
-        <Cell predicted color={randomColor} />
-        <Cell predicted color={randomColor} />
+        <Cell color={randomColor} />
+        <Cell color={randomColor} />
+        <Cell color={randomColor} />
       </div>{" "}
     </div>
   );

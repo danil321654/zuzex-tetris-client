@@ -2,20 +2,13 @@ import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import cls from "classnames";
 import UsernamesRow from "./UsernamesRow";
-import PlayGroundRow from "./PlayGroundRow";
+import GameCanvas from "./GameCanvas";
 import "./PlayGround.scss";
 import { moveShapeDown, moveShapeHorizontal } from "../../reducers";
 import { shapeRotate } from "../../reducers/index";
 import "../../index.scss";
 const PlayGround = () => {
-  const {
-    playGround,
-    lose,
-    username,
-    mouseControlsEnabled,
-    theme,
-    moveInterval,
-  } = useSelector((state) => state);
+  const { lose, username, theme, moveInterval } = useSelector((state) => state);
 
   const dispatch = useDispatch();
 
@@ -24,11 +17,6 @@ const PlayGround = () => {
     inactive: lose && username.length,
     [`${theme}`]: true,
   });
-
-  const rotateShapeWithMouse = (e) => {
-    e.preventDefault();
-    !lose && mouseControlsEnabled && dispatch(shapeRotate(false));
-  };
 
   useEffect(() => {
     let lastTime = 0;
@@ -66,6 +54,7 @@ const PlayGround = () => {
     };
     document.addEventListener("keydown", dispatchMove);
     document.addEventListener("keyup", onKeyUp);
+
     return () => {
       document.removeEventListener("keydown", dispatchMove);
       document.removeEventListener("keyup", onKeyUp);
@@ -73,15 +62,9 @@ const PlayGround = () => {
   });
 
   return (
-    <div
-      className={playGroundClass}
-      onClick={() => !lose && mouseControlsEnabled && dispatch(moveShapeDown())}
-      onContextMenu={rotateShapeWithMouse}
-    >
+    <div className={playGroundClass}>
       <UsernamesRow />
-      {playGround.map((row, i) => (
-        <PlayGroundRow key={i} row={row} i={i} />
-      ))}
+      <GameCanvas />
     </div>
   );
 };

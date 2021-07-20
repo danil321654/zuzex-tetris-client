@@ -11,7 +11,7 @@ function App() {
   return (
     <>
       <Background />
-      {username.length && lose && <LoseModal />}
+      {username.length > 0 && lose && <LoseModal />}
       <Controls />
       {!loading ? <PlayGround /> : <Loader />}
     </>

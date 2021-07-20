@@ -13,7 +13,6 @@ const initialField = [];
 const initialState = {
   playGround: initialField,
   loading: true,
-  mouseControlsEnabled: false,
   currentShape: [],
   nextShape: [],
   nextColor: -1,
@@ -133,9 +132,6 @@ const playGroundSlice = createSlice({
         state.predictedShape = [];
       } else state.move = [];
     },
-    toggleMouseControls(state, action) {
-      state.mouseControlsEnabled = action.payload;
-    },
     changeTheme(state, action) {
       state.theme = action.payload;
     },
@@ -156,7 +152,6 @@ export const {
   requestNewGame,
   startWatching,
   moveShapeDown,
-  toggleMouseControls,
   changeTheme,
 } = playGroundSlice.actions;
 export default playGroundSlice.reducer;
