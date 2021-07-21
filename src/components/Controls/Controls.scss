@@ -60,15 +60,6 @@
   background-color: white !important;
   opacity: 0.7;
 }
-.soft {
-  filter: grayscale(80%);
-}
-.dark {
-  filter: invert(75%);
-}
-.acid {
-  filter: hue-rotate(100deg) contrast(120%);
-}
 .theme {
   transition: filter 2s, -webkit-filter 2s;
 }

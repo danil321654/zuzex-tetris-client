@@ -24,7 +24,8 @@ $cell_size: 35px;
     .PlayGround-cell {
       flex-shrink: 0;
       background-color: rgb(194, 194, 194);
-      margin-right: 1px;
+      margin-right: 5px;
+      margin-bottom: 5px;
     }
 
     .PlayGround-cell.none {
@@ -61,8 +62,8 @@ $cell_size: 35px;
   height: min-content;
   padding: 15px;
   .PlayGround-cell {
-    margin-right: 1px;
-    margin-bottom: 1px;
+    margin-right: 5px;
+    margin-bottom: 5px;
     height: $cell_size / 1.66;
     width: $cell_size / 1.66;
   }
