@@ -45,6 +45,8 @@ $cell_size: 35px;
 .PlayGround-container.loading {
   animation: spin 1s linear infinite;
   animation-timing-function: steps(4);
+  width: 110px;
+  height: 110px;
 }
 @keyframes spin {
   100% {
