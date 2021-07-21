@@ -14,7 +14,7 @@ const PlayGround = () => {
   const dispatch = useDispatch();
 
   const playGroundClass = cls({
-    "PlayGround-container": true,
+    "PlayGround-container theme": true,
     inactive: lose && username.length,
   });
 

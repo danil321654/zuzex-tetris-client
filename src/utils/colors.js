@@ -3,9 +3,9 @@ export const colors = [
   "orange",
   "yellow",
   "green",
-  "lightblue",
+  "aqua",
   "blue",
   "purple",
-  "pink",
+  "DeepPink",
   "brown",
 ];

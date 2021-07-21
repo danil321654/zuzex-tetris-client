@@ -6,10 +6,7 @@ const LoseModal = () => {
   const dispatch = useDispatch();
   const winner = [...users].sort((a, b) => b.score - a.score)[0];
   return (
-    <div
-      className="LoseModal-container"
-      style={{ filter: theme, transition: "filter .5s" }}
-    >
+    <div className="LoseModal-container theme" style={{ filter: theme }}>
       <div className={`LoseModal-content`}>
         lose
         <div>{`Total score: ${score}`}</div>

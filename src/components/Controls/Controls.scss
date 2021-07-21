@@ -19,7 +19,7 @@
     flex-direction: column;
     align-items: center;
     font-size: 20px;
-    width: 200px;
+    width: max-content;
     z-index: 3;
   }
 }
@@ -53,6 +53,7 @@
   left: 0;
   z-index: -1;
   height: 100vh;
+  width: 200vw;
   overflow: hidden;
   border: none !important;
   padding: 0 !important;
@@ -67,4 +68,19 @@
 }
 .acid {
   filter: hue-rotate(100deg) contrast(120%);
+}
+.theme {
+  transition: filter 2s, -webkit-filter 2s;
+}
+
+@keyframes slideout {
+  from {
+    margin-left: -40%;
+    width: 100%;
+  }
+
+  to {
+    margin-left: 0%;
+    width: 100%;
+  }
 }

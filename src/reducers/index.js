@@ -24,6 +24,7 @@ const initialState = {
   score: 0,
   color: 0,
   theme: "classic",
+  moveInterval: 800,
 };
 
 const playGroundSlice = createSlice({
@@ -58,7 +59,7 @@ const playGroundSlice = createSlice({
       state.loading = state.playGround[0].length === 0;
       state.score = action.payload.score;
       state.moveInterval = action.payload.moveInterval;
-      state.theme = action.payload.theme;
+      if (state.username.length) state.theme = action.payload.theme;
       state.predictedShape = predictDownMove(
         state.playGround,
         state.currentShape

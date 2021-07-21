@@ -12,10 +12,7 @@ const Controls = () => {
   const dispatch = useDispatch();
 
   return (
-    <div
-      className="Controls-container"
-      style={{ filter: theme, transition: "filter .5s" }}
-    >
+    <div className="Controls-container theme" style={{ filter: theme }}>
       {!username.length ? (
         <LoginForm />
       ) : (

@@ -4,29 +4,32 @@ import cls from "classnames";
 import { useSelector } from "react-redux";
 import { colors } from "../../utils/colors";
 const Background = () => {
-  const { theme } = useSelector((state) => state);
+  const { theme, moveInterval } = useSelector((state) => state);
 
   const backGroundClass = cls({
-    "PlayGround-container Background": true,
+    "PlayGround-container Background theme": true,
   });
 
   const canvasRef = useRef(null);
 
   useEffect(() => {
+    let lastColor = getRandomInt(9);
+    const blocks = Array.from({ length: 100 }, () =>
+      Array.from({ length: 100 }, () => {
+        const rand = Math.random();
+        if (rand > 0.85) lastColor = getRandomInt(9);
+        return lastColor;
+      })
+    );
+    const canvas = canvasRef.current;
+    const context = canvas.getContext("2d");
     const drawBackground = () => {
-      let lastColor = getRandomInt(9);
-      const blocks = Array.from({ length: 100 }, () =>
-        Array.from({ length: 100 }, () => {
-          const rand = Math.random();
-          if (rand > 0.85) lastColor = getRandomInt(9);
-          return lastColor;
-        })
-      );
+      requestAnimationFrame(drawBackground);
+
       const size = 30;
       const gap = 5;
-      const canvas = canvasRef.current;
-      const context = canvas.getContext("2d");
-      canvas.width = window.innerWidth;
+
+      canvas.width = 2 * window.innerWidth;
       canvas.height = window.innerHeight;
       blocks.forEach((row, j) =>
         row.forEach((block, i) => {
@@ -65,6 +68,7 @@ const Background = () => {
       );
     };
     drawBackground();
+
     window.addEventListener("resize", drawBackground);
     return window.removeEventListener("resize", drawBackground);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -73,9 +77,20 @@ const Background = () => {
   return (
     <div
       className={backGroundClass}
-      style={{ filter: theme, transition: "filter .5s" }}
+      style={{
+        filter: theme,
+      }}
     >
-      <canvas ref={canvasRef} />
+      <canvas
+        ref={canvasRef}
+        style={{
+          animationDuration: `${(moveInterval / 1000) * 50}s`,
+          animationName: "slideout",
+          animationIterationCount: "infinite",
+          animationDirection: "alternate",
+          animationTimingFunction: "linear",
+        }}
+      />
     </div>
   );
 };
