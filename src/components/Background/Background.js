@@ -4,11 +4,10 @@ import cls from "classnames";
 import { useSelector } from "react-redux";
 import { colors } from "../../utils/colors";
 const Background = () => {
-  const { theme, username, lose } = useSelector((state) => state);
+  const { theme } = useSelector((state) => state);
 
   const backGroundClass = cls({
     "PlayGround-container Background": true,
-    [`${theme}`]: true,
   });
 
   const canvasRef = useRef(null);
@@ -23,7 +22,8 @@ const Background = () => {
           return lastColor;
         })
       );
-
+      const size = 30;
+      const gap = 5;
       const canvas = canvasRef.current;
       const context = canvas.getContext("2d");
       canvas.width = window.innerWidth;
@@ -31,14 +31,36 @@ const Background = () => {
       blocks.forEach((row, j) =>
         row.forEach((block, i) => {
           context.fillStyle = colors[block];
-          let rectWidth = 30;
-          let rectHeight = 30;
+
+          if (
+            blocks[j + 1] !== undefined &&
+            blocks[j + 1][i] === block &&
+            blocks[j][i + 1] !== undefined &&
+            blocks[j][i + 1] === block &&
+            blocks[j + 1][i + 1] === block
+          )
+            context.fillRect(
+              i * (size + gap),
+              j * (size + gap),
+              size + gap,
+              size + gap
+            );
           if (blocks[j + 1] !== undefined && blocks[j + 1][i] === block)
-            rectHeight = 31;
+            context.fillRect(
+              i * (size + gap),
+              j * (size + gap),
+              size,
+              size + gap
+            );
 
           if (blocks[j][i + 1] !== undefined && blocks[j][i + 1] === block)
-            rectWidth = 31;
-          context.fillRect(i * 30 + i, j * 30 + j, rectWidth, rectHeight);
+            context.fillRect(
+              i * (size + gap),
+              j * (size + gap),
+              size + gap,
+              size
+            );
+          context.fillRect(i * (size + gap), j * (size + gap), size, size);
         })
       );
     };
@@ -46,10 +68,13 @@ const Background = () => {
     window.addEventListener("resize", drawBackground);
     return window.removeEventListener("resize", drawBackground);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [window.innerWidth, window.innerHeight, theme, username, lose]);
+  }, [window.innerWidth, window.innerHeight]);
 
   return (
-    <div className={backGroundClass}>
+    <div
+      className={backGroundClass}
+      style={{ filter: theme, transition: "filter .5s" }}
+    >
       <canvas ref={canvasRef} />
     </div>
   );

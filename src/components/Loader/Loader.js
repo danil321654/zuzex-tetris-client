@@ -15,7 +15,10 @@ const Loader = () => {
     };
   }, []);
   return (
-    <div className={`container PlayGround-container loading ${theme}`}>
+    <div
+      className={`container PlayGround-container loading`}
+      style={{ filter: theme }}
+    >
       <div className="PlayGround-row">
         <Cell none />
         <Cell none />

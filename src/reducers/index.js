@@ -1,10 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { getRandomShape } from "../utils/getRandomShape";
-import {
-  horizontalMoveHandle,
-  predictDownMove,
-  verticalMoveHandle,
-} from "../utils/move";
+import { predictDownMove } from "../utils/move";
+import { verticalMoveHandle } from "../utils/verticalMoveHandle";
+import { horizontalMoveHandle } from "../utils/horizontalMoveHandle";
 import { rotateHandle } from "../utils/rotateHandle";
 import Timer, { intervalFunc } from "../utils/gameInterval";
 
@@ -48,21 +46,26 @@ const playGroundSlice = createSlice({
       if (action.payload.names) state.users = action.payload.names;
       if (action.payload.position) state.position = action.payload.position;
       else if (state.username) {
+        const myIndex = state.users
+          .map((el) => el.name)
+          .indexOf(state.username);
         state.position = Math.ceil(
           (state.playGround[0].length / (state.users.length + 1)) *
-            (state.users.indexOf(state.username) + 1) +
-            state.users.indexOf(state.username)
+            (myIndex + 1) +
+            myIndex
         );
       }
       state.loading = state.playGround[0].length === 0;
       state.score = action.payload.score;
       state.moveInterval = action.payload.moveInterval;
+      state.theme = action.payload.theme;
       state.predictedShape = predictDownMove(
         state.playGround,
         state.currentShape
       );
     },
     spawnShape(state) {
+      const myIndex = state.users.map((el) => el.name).indexOf(state.username);
       if (!state.lose && state.currentShape.length === 0) {
         state.currentShape =
           state.nextShape.length > 0
@@ -73,40 +76,45 @@ const playGroundSlice = createSlice({
             : getRandomShape(state.position - 1);
         state.nextShape = getRandomShape(1);
         state.color =
-          state.nextColor > -1
-            ? state.nextColor
-            : (state.users.indexOf(state.username) % 9) + 1;
-        state.nextColor = (state.users.indexOf(state.username) % 9) + 1;
+          state.nextColor > -1 ? state.nextColor : (myIndex % 9) + 1;
+        state.nextColor = (myIndex % 9) + 1;
       }
       state.lose = false;
     },
-    moveShapeHorizontal(state, action) {
-      const result = horizontalMoveHandle(
-        state.playGround,
-        state.currentShape,
-        action.payload
-      );
+    moveShape(state, action) {
+      let result;
+      switch (action.payload.type) {
+        case "MOVE_ROTATE":
+          result = rotateHandle(
+            state.playGround,
+            state.currentShape,
+            action.payload.value
+          );
+          state.move = [...result];
+          break;
+        case "MOVE_VERTICAL":
+          result = verticalMoveHandle(
+            state.playGround,
+            state.currentShape,
+            action.payload.value
+          );
+          state.move = [...result];
+          break;
+        case "MOVE_HORIZONTAL":
+          result = horizontalMoveHandle(
+            state.playGround,
+            state.currentShape,
+            action.payload.value
+          );
+          state.move = [...result];
+          break;
+        default:
+          result = state.currentShape;
+          state.move = [];
+      }
       state.currentShape = [...result];
-      state.move = [...result];
     },
-    moveShapeVertical(state, action) {
-      const result = verticalMoveHandle(
-        state.playGround,
-        state.currentShape,
-        action.payload
-      );
-      state.currentShape = [...result];
-      state.move = [...result];
-    },
-    shapeRotate(state, action) {
-      const result = rotateHandle(
-        state.playGround,
-        state.currentShape,
-        action.payload
-      );
-      state.currentShape = [...result];
-      state.move = [...result];
-    },
+
     shapeLand(state) {
       state.currentShape = [];
     },
@@ -117,6 +125,7 @@ const playGroundSlice = createSlice({
     newGame(state, action) {
       state.lose = false;
       state.moveInterval = action.payload.moveInterval;
+      if (action.payload.names) state.users = action.payload.names;
     },
     authorize(state, action) {
       state.username = action.payload;
@@ -142,10 +151,8 @@ export const {
   applyPlayGround,
   connectToGame,
   spawnShape,
-  moveShapeHorizontal,
-  moveShapeVertical,
+  moveShape,
   shapeLand,
-  shapeRotate,
   lose,
   authorize,
   newGame,

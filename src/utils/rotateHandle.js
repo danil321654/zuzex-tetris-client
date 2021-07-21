@@ -47,3 +47,7 @@ export const rotateHandle = (playGround, currentShape, right = false) => {
 
   return rotatedShapePositioned;
 };
+export const rotateActionPayload = (payload) => ({
+  type: "MOVE_ROTATE",
+  value: payload,
+});

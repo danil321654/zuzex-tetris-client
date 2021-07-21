@@ -8,6 +8,7 @@ import Background from "./components/Background";
 import "./index.scss";
 function App() {
   const { loading, lose, username } = useSelector((state) => state);
+
   return (
     <>
       <Background />

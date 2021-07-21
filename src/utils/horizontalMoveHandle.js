@@ -15,3 +15,7 @@ export const horizontalMoveHandle = (playGround, currentShape, offset) => {
 
   return shapeCopy.map((el) => ({ ...el, j: el.j + offset }));
 };
+export const horizontalMoveActionPayload = (payload) => ({
+  type: "MOVE_HORIZONTAL",
+  value: payload,
+});

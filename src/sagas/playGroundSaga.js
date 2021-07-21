@@ -1,11 +1,9 @@
 import { put, select, takeEvery, takeLatest, all } from "redux-saga/effects";
 
 import {
-  moveShapeHorizontal,
   spawnShape,
-  moveShapeVertical,
+  moveShape,
   shapeLand,
-  shapeRotate,
   moveShapeDown,
 } from "../reducers/index";
 import socket from "../api";
@@ -70,9 +68,7 @@ export function* handleShapeLand() {
 export default function* watchPlayGround() {
   yield all([
     takeLatest(spawnShape, handleShapeAppear),
-    takeEvery(shapeRotate, handleShapeMove),
-    takeEvery(moveShapeHorizontal, handleShapeMove),
-    takeEvery(moveShapeVertical, handleShapeMove),
+    takeEvery(moveShape, handleShapeMove),
     takeEvery(moveShapeDown, handleShapeDown),
     takeEvery(shapeLand, handleShapeLand),
   ]);

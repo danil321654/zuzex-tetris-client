@@ -4,42 +4,36 @@ import cls from "classnames";
 import UsernamesRow from "./UsernamesRow";
 import GameCanvas from "./GameCanvas";
 import "./PlayGround.scss";
-import { moveShapeDown, moveShapeHorizontal } from "../../reducers";
-import { shapeRotate } from "../../reducers/index";
+import { moveShape, moveShapeDown } from "../../reducers";
 import "../../index.scss";
+import { horizontalMoveActionPayload } from "../../utils/horizontalMoveHandle";
+import { rotateActionPayload } from "../../utils/rotateHandle";
 const PlayGround = () => {
-  const { lose, username, theme, moveInterval } = useSelector((state) => state);
+  const { lose, username, theme } = useSelector((state) => state);
 
   const dispatch = useDispatch();
 
   const playGroundClass = cls({
     "PlayGround-container": true,
     inactive: lose && username.length,
-    [`${theme}`]: true,
   });
 
   useEffect(() => {
-    let lastTime = 0;
     const dispatchMove = (e) => {
+      if (e.repeat) return;
       if (!lose && username.length > 0)
         switch (e.code) {
           case "KeyA":
-            if (Date.now() - lastTime > moveInterval / 40) {
-              dispatch(moveShapeHorizontal(-1));
-              lastTime = Date.now();
-            }
+            dispatch(moveShape(horizontalMoveActionPayload(-1)));
             break;
           case "KeyD":
-            if (Date.now() - lastTime > moveInterval / 40) {
-              dispatch(moveShapeHorizontal(1));
-              lastTime = Date.now();
-            }
+            dispatch(moveShape(horizontalMoveActionPayload(1)));
             break;
           case "KeyQ":
-            dispatch(shapeRotate(false));
+            dispatch(moveShape(rotateActionPayload(false)));
             break;
           case "KeyE":
-            dispatch(shapeRotate(true));
+            dispatch(moveShape(rotateActionPayload(true)));
             break;
           case "KeyS":
             dispatch(moveShapeDown());
@@ -49,20 +43,20 @@ const PlayGround = () => {
             break;
         }
     };
-    const onKeyUp = (e) => {
-      lastTime = 0;
-    };
+    // document.addEventListener("keydown", dispatchMove);
     document.addEventListener("keydown", dispatchMove);
-    document.addEventListener("keyup", onKeyUp);
 
     return () => {
+      // document.removeEventListener("keydown", dispatchMove);
       document.removeEventListener("keydown", dispatchMove);
-      document.removeEventListener("keyup", onKeyUp);
     };
   });
 
   return (
-    <div className={playGroundClass}>
+    <div
+      className={playGroundClass}
+      style={{ filter: theme, transition: "filter .5s" }}
+    >
       <UsernamesRow />
       <GameCanvas />
     </div>

@@ -6,8 +6,10 @@ const UsernamesRow = () => {
   const users = useSelector((state) => state.users);
   return (
     <div className="PlayGround-users">
-      {users.map((name) => (
-        <span key={name}>{name}</span>
+      {users.map(({ name, score }) => (
+        <span key={name}>
+          {name} ({score})
+        </span>
       ))}
     </div>
   );
