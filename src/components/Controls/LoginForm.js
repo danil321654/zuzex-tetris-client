@@ -23,12 +23,18 @@ const LoginForm = () => {
   };
   return (
     <form onSubmit={handleSubmit} className={`Controls-item ${theme}`}>
-      {error.length > 0 && <div>{error}</div>}
+      {error.length > 0 && (
+        <div>{users.length > 8 ? "Too many players" : error}</div>
+      )}
       <input
         value={name}
         onChange={(e) => setName(e.target.value.split(" ").join(""))}
       />
-      <button className="Controls-button login" onClick={handleLogin}>
+      <button
+        className="Controls-button login"
+        onClick={handleLogin}
+        disabled={users.length > 8}
+      >
         {" "}
         login
       </button>

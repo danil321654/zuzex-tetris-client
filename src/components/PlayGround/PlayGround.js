@@ -9,7 +9,7 @@ import "../../index.scss";
 import { horizontalMoveActionPayload } from "../../utils/horizontalMoveHandle";
 import { rotateActionPayload } from "../../utils/rotateHandle";
 const PlayGround = () => {
-  const { lose, username, theme, readyToMove } = useSelector((state) => state);
+  const { lose, username, theme } = useSelector((state) => state);
 
   const dispatch = useDispatch();
 

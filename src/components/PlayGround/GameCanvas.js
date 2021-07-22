@@ -9,7 +9,7 @@ const GameCanvas = () => {
   useEffect(() => {
     const canvas = canvasRef.current;
     const context = canvas.getContext("2d");
-    const size = playGround[0].length > 30 ? 900 / playGround[0].length : 25;
+    const size = playGround[0].length > 30 ? 900 / playGround[0].length : 24;
     const gap = 5;
     canvas.height = playGround.length * (size + gap);
 
