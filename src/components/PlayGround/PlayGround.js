@@ -21,7 +21,7 @@ const PlayGround = () => {
   useEffect(() => {
     const dispatchMove = (e) => {
       if (e.repeat) return;
-      if (!readyToMove) return;
+      // if (!readyToMove) return;
       if (!lose && username.length > 0)
         switch (e.code) {
           case "KeyA":
