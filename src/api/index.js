@@ -9,8 +9,8 @@ import {
 } from "../reducers/index";
 const io = require("socket.io-client");
 
-// const socket = io("https://zuzex-tetris-server.herokuapp.com/");
-const socket = io("http://192.168.5.22:4000/");
+const socket = io("https://zuzex-tetris-server.herokuapp.com/");
+// const socket = io("http://192.168.5.22:4000/");
 socket.on("you-connected", (payload) => {
   store.dispatch(connectToGame(payload));
 });
