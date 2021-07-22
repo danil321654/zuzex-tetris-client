@@ -133,7 +133,7 @@ const playGroundSlice = createSlice({
           result = state.currentShape;
           state.move = [];
       }
-      // state.currentShape = [...result];
+      state.currentShape = [...result];
       state.readyToMove = false;
     },
 
