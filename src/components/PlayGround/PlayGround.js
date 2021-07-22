@@ -9,7 +9,7 @@ import "../../index.scss";
 import { horizontalMoveActionPayload } from "../../utils/horizontalMoveHandle";
 import { rotateActionPayload } from "../../utils/rotateHandle";
 const PlayGround = () => {
-  const { lose, username, theme } = useSelector((state) => state);
+  const { lose, username, theme, readyToMove } = useSelector((state) => state);
 
   const dispatch = useDispatch();
 
@@ -21,6 +21,7 @@ const PlayGround = () => {
   useEffect(() => {
     const dispatchMove = (e) => {
       if (e.repeat) return;
+      if (!readyToMove) return;
       if (!lose && username.length > 0)
         switch (e.code) {
           case "KeyA":

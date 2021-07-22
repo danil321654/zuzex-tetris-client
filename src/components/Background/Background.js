@@ -84,7 +84,7 @@ const Background = () => {
       <canvas
         ref={canvasRef}
         style={{
-          animationDuration: `${(moveInterval / 1000) * 50}s`,
+          animationDuration: `${(moveInterval / 800) * 40}s`,
           animationName: "slideout",
           animationIterationCount: "infinite",
           animationDirection: "alternate",

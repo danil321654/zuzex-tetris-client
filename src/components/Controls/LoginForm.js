@@ -10,7 +10,7 @@ const LoginForm = () => {
 
   const handleLogin = () => {
     if (name.length > 0) {
-      if (!users.includes(name)) {
+      if (!users.map((user) => user.name).includes(name)) {
         dispatch(authorize(name.split(" ").join("")));
         setError("Please type in username");
       } else setError("User already exists");

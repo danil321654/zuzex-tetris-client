@@ -25,6 +25,7 @@ const initialState = {
   color: 0,
   theme: "classic",
   moveInterval: 800,
+  readyToMove: true,
 };
 
 const playGroundSlice = createSlice({
@@ -46,25 +47,44 @@ const playGroundSlice = createSlice({
       state.playGround = action.payload.playGround;
       if (action.payload.names) state.users = action.payload.names;
       if (action.payload.position) state.position = action.payload.position;
-      else if (state.username) {
-        const myIndex = state.users
-          .map((el) => el.name)
-          .indexOf(state.username);
-        state.position = Math.ceil(
-          (state.playGround[0].length / (state.users.length + 1)) *
-            (myIndex + 1) +
-            myIndex
-        );
-      }
+      if (action.payload.isNewShapeRequired) state.currentShape = [];
+      // else if (state.username) {
+      //   if(state.currentShape.some)
+      //   const myIndex = state.users
+      //     .map((el) => el.name)
+      //     .indexOf(state.username);
+      //   // state.position = Math.ceil(
+      //   //   (state.playGround[0].length / (state.users.length + 1)) *
+      //   //     (myIndex + 1) +
+      //   //     myIndex -
+      //   //     4
+      //   // );
+      //   state.position = Math.floor(
+      //     ((state.playGround[0].length - state.users.length * 2) /
+      //       (state.users.length + 1)) *
+      //       (myIndex + 1) +
+      //       2 * (myIndex + 1) -
+      //       1
+      //   );
+      // }
       state.loading = state.playGround[0].length === 0;
       state.score = action.payload.score;
       state.moveInterval = action.payload.moveInterval;
       if (state.username.length) state.theme = action.payload.theme;
+      // state.predictedShape = predictDownMove(
+      //   state.playGround,
+      //   state.currentShape
+      // );
+    },
+    applyShape(state, action) {
+      state.currentShape = action.payload.shape;
       state.predictedShape = predictDownMove(
         state.playGround,
         state.currentShape
       );
+      state.readyToMove = true;
     },
+
     spawnShape(state) {
       const myIndex = state.users.map((el) => el.name).indexOf(state.username);
       if (!state.lose && state.currentShape.length === 0) {
@@ -113,7 +133,8 @@ const playGroundSlice = createSlice({
           result = state.currentShape;
           state.move = [];
       }
-      state.currentShape = [...result];
+      // state.currentShape = [...result];
+      state.readyToMove = false;
     },
 
     shapeLand(state) {
@@ -127,6 +148,7 @@ const playGroundSlice = createSlice({
       state.lose = false;
       state.moveInterval = action.payload.moveInterval;
       if (action.payload.names) state.users = action.payload.names;
+      state.currentShape = [];
     },
     authorize(state, action) {
       state.username = action.payload;
@@ -150,6 +172,7 @@ const playGroundSlice = createSlice({
 
 export const {
   applyPlayGround,
+  applyShape,
   connectToGame,
   spawnShape,
   moveShape,
