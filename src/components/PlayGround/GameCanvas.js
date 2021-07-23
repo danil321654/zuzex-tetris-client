@@ -73,7 +73,7 @@ const GameCanvas = () => {
             );
           context.fillRect(i * (size + gap), j * (size + gap), size, size);
         }
-        //context.fillRect(i * size + i * gap, j * size + j * gap, size, size);
+
         context.fillRect(i * size + i * gap, j * size + j * gap, size, size);
       })
     );

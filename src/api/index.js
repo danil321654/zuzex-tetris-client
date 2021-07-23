@@ -1,4 +1,5 @@
 import store from "../store";
+
 import {
   applyPlayGround,
   connectToGame,
@@ -18,7 +19,6 @@ socket.on("user-connected", (payload) => {
   store.dispatch(applyPlayGround(payload));
 });
 socket.on("disconnected", (payload) => {
-  console.log(payload);
   store.dispatch(applyPlayGround(payload));
   if (payload.isNewShapeRequired) store.dispatch(spawnShape());
 });
