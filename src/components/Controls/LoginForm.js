@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory, useLocation } from "react-router";
-import { authorize } from "../../reducers";
+import { authorize, startWatching } from "../../reducers";
 
 const savedUsername = localStorage.getItem("username");
 
@@ -59,7 +59,10 @@ const LoginForm = () => {
       ) : (
         <button
           className="Controls-button login"
-          onClick={() => history.push("/")}
+          onClick={() => {
+            history.push("/");
+            dispatch(startWatching());
+          }}
         >
           {" "}
           watch
