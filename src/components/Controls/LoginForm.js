@@ -32,26 +32,30 @@ const LoginForm = () => {
     setName(localStorage.getItem("username") || "");
   }, []);
   return (
-    <form onSubmit={handleSubmit} className={`Controls-item ${theme}`}>
-      {error.length > 0 && (
-        <div>{users.length > 8 ? "Too many players" : error}</div>
-      )}
-      <input
-        value={name}
-        onChange={(e) => setName(e.target.value.split(" ").join(""))}
-      />
-      <button
-        className="Controls-button login"
-        onClick={handleLogin}
-        disabled={users.length > 8}
-      >
-        {" "}
-        login
-      </button>
+    <>
+      <form onSubmit={handleSubmit} className={`Controls-item ${theme}`}>
+        {error.length > 0 && (
+          <div>{users.length > 8 ? "Too many players" : error}</div>
+        )}
+        <input
+          value={name}
+          onChange={(e) => setName(e.target.value.split(" ").join(""))}
+        />
+        <button
+          className="Controls-button login"
+          onClick={handleLogin}
+          disabled={users.length > 8}
+        >
+          {" "}
+          login
+        </button>
+      </form>
       {location.pathname !== "/rating" ? (
         <button
           className="Controls-button login"
-          onClick={() => history.push("/rating")}
+          onClick={() => {
+            history.push("/rating");
+          }}
         >
           {" "}
           rating
@@ -61,14 +65,13 @@ const LoginForm = () => {
           className="Controls-button login"
           onClick={() => {
             history.push("/");
-            dispatch(startWatching());
           }}
         >
           {" "}
           watch
         </button>
       )}
-    </form>
+    </>
   );
 };
 export default LoginForm;

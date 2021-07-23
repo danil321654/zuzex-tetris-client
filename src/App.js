@@ -1,6 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
+import { createBrowserHistory } from "history";
 import PlayGround from "./components/PlayGround";
 import LoseModal from "./components/Controls/LoseModal";
 import Controls from "./components/Controls";
@@ -12,7 +13,7 @@ function App() {
   const { loading, lose, username } = useSelector((state) => state);
 
   return (
-    <BrowserRouter>
+    <BrowserRouter history={createBrowserHistory()}>
       <Background />
       {username.length > 0 && lose && <LoseModal />}
       <Controls />
